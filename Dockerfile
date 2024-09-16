@@ -31,5 +31,6 @@ ENV FLASK_ENV=production
 EXPOSE 5000
 
 # Starte die Flask App
-RUN ./app/startup.sh
-# CMD ["/bin/bash", "-c", "./app/startup.sh"]
+ADD ./app/startup.sh /opt
+RUN RUN chmod 755 ./app/startup.sh
+CMD ["./app/startup.sh"]
