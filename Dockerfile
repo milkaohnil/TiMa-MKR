@@ -6,22 +6,16 @@ WORKDIR /app
 
 # Kopiere die requirements.txt und installiere Abhängigkeiten
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Installiere MariaDB-Client (oder mysql-client)
-RUN apt-get update && apt-get install -y mariadb-client
-RUN pip install Flask-Migrate
+RUN apt-get update && apt-get install -y mariadb-client && apt-get clean
 
 # Kopiere den Rest der App
 COPY . .
 
-# Kopiere das startup.sh Skript ins Image
-COPY startup.sh /app/startup.sh
-
 # Mache das startup.sh Skript ausführbar
-RUN chmod +x /app/startup.sh
-
-WORKDIR /app
+RUN chmod +x ./startup.sh
 
 # Setze Umgebungsvariablen für Flask
 ENV FLASK_APP=app
@@ -31,6 +25,4 @@ ENV FLASK_ENV=production
 EXPOSE 5000
 
 # Starte die Flask App
-ADD ./app/startup.sh /opt
-RUN RUN chmod 755 ./app/startup.sh
-CMD ["./app/startup.sh"]
+CMD ["./startup.sh"]
