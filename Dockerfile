@@ -1,28 +1,33 @@
-# pulls a lightweighted python image
-FROM python:3.9.13-slim-buster
+# Verwende ein Python 3.9 Image
+FROM python:3.9-slim
 
-# install mariadb-client to check connection to database
-# this is only used in combination with the startup.sh script
-RUN apt-get update
-RUN apt-get install mariadb-client-10.3 -y
-
-# folder for application
+# Setze Arbeitsverzeichnis
 WORKDIR /app
 
-# copy requirements file
-COPY requirements.txt requirements.txt
+# Kopiere die requirements.txt und installiere Abhängigkeiten
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-# update pip3 version
-RUN pip3 install --upgrade pip
+# Installiere MariaDB-Client (oder mysql-client)
+RUN apt-get update && apt-get install -y mariadb-client
+RUN pip install Flask-Migrate
 
-# install all requirements according to file
-RUN pip3 install -r requirements.txt
+# Kopiere das startup.sh Skript ins Image
+COPY startup.sh /app/startup.sh
 
-# copy all application files
+# Mache das startup.sh Skript ausführbar
+RUN chmod +x /app/startup.sh
+
+# Kopiere den Rest der App
 COPY . .
 
-# set environment variable for flask application
-RUN export FLASK_APP=tima.py
+# Setze Umgebungsvariablen für Flask
+ENV FLASK_APP=app
+ENV FLASK_ENV=production
 
-# start flask application
-CMD [ "flask", "run", "-h", "0.0.0.0" ]
+# Exponiere Port 5000
+EXPOSE 5000
+
+# Starte die Flask App
+# ENTRYPOINT ["/app/startup.sh"]
+CMD ["/bin/sh", "-c", "flask run --host=0.0.0.0"]

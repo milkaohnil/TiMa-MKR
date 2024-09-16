@@ -7,7 +7,6 @@ services:
       # build current folder according to description in Dockerfile
       context: .
       dockerfile: Dockerfile
-    command: ./startup.sh # startup script to ensure correct initialization of database
     restart: unless-stopped
     environment:
       - FLASK_APP=tima.py
