@@ -2,7 +2,7 @@
 All routes for the web application
 """
 from app import app, db
-from app.froms import LoginForm, RegistrationForm, WorkingHoursForm, EditUserForm, EditWorkingHoursForm, EmptySubmitForm
+from app.forms import LoginForm, RegistrationForm, WorkingHoursForm, EditUserForm, EditWorkingHoursForm, EmptySubmitForm
 from app.models import User, WorkingHours
 import datetime
 from dateutil.relativedelta import relativedelta

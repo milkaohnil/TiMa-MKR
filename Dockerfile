@@ -12,14 +12,16 @@ RUN pip install -r requirements.txt
 RUN apt-get update && apt-get install -y mariadb-client
 RUN pip install Flask-Migrate
 
+# Kopiere den Rest der App
+COPY . .
+
 # Kopiere das startup.sh Skript ins Image
 COPY startup.sh /app/startup.sh
 
 # Mache das startup.sh Skript ausführbar
 RUN chmod +x /app/startup.sh
 
-# Kopiere den Rest der App
-COPY . .
+WORKDIR /app
 
 # Setze Umgebungsvariablen für Flask
 ENV FLASK_APP=app
@@ -29,5 +31,5 @@ ENV FLASK_ENV=production
 EXPOSE 5000
 
 # Starte die Flask App
-# ENTRYPOINT ["/app/startup.sh"]
-CMD ["/bin/sh", "-c", "flask run --host=0.0.0.0"]
+RUN ./app/startup.sh
+# CMD ["/bin/bash", "-c", "./app/startup.sh"]
