@@ -8,7 +8,7 @@ services:
       - FLASK_APP=tima.py
       - FLASK_ENV=development
       - DATABASE=tima
-      - DATABASE_USER=tima-db-user
+      - DATABASE_USER=timadbuser
       - DATABASE_PASSWORD_FILE=/run/secrets/db_user_pwd
       - SECRET_KEY_FILE=/run/secrets/secret_key
     depends_on:
@@ -25,7 +25,7 @@ services:
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_DATABASE=tima
-      - MYSQL_USER=tima-db-user
+      - MYSQL_USER=timadbuser
       - MYSQL_PASSWORD_FILE=/run/secrets/db_user_pwd
     volumes:
       - db-volume:/var/lib/mysql
